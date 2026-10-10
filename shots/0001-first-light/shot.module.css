@@ -1,0 +1,263 @@
+.root {
+  --paper: #07070a;
+  --amber: #e9a23b;
+  --bone: #efe9df;
+  --dim: rgb(239 233 223 / 0.42);
+  --faint: rgb(239 233 223 / 0.2);
+
+  position: relative;
+  min-height: 100dvh;
+  background: var(--paper);
+  color: var(--bone);
+  font-family: var(--shot-sans);
+  cursor: crosshair;
+  overflow: clip;
+}
+
+/* The survey grid only exists where the lamp falls. */
+.grid {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(to right, var(--faint) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--faint) 1px, transparent 1px);
+  background-size: 88px 88px;
+  mask-image: radial-gradient(
+    circle 320px at var(--mx, 50%) var(--my, 40%),
+    #000 0%,
+    rgb(0 0 0 / 0.45) 45%,
+    transparent 72%
+  );
+}
+
+.lamp {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  background: radial-gradient(
+    circle 340px at var(--mx, 50%) var(--my, 40%),
+    rgb(233 162 59 / 0.13) 0%,
+    rgb(233 162 59 / 0.04) 40%,
+    transparent 70%
+  );
+}
+
+.grain {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* The plate itself: an instrument dial holding down the right half of the
+   composition, and something for the lamp to actually fall across. */
+.plate {
+  position: absolute;
+  right: clamp(-11rem, -5vw, -3rem);
+  top: 47%;
+  translate: 0 -50%;
+  width: clamp(26rem, 42vw, 44rem);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.plateRings {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  border: 1px solid rgb(239 233 223 / 0.12);
+  background: repeating-radial-gradient(
+    circle at 50% 50%,
+    transparent 0 43px,
+    rgb(239 233 223 / 0.05) 43px 44px
+  );
+  mask-image: radial-gradient(circle at 50% 50%, #000 55%, transparent 76%);
+}
+
+.plateTicks {
+  position: absolute;
+  inset: 11%;
+  border-radius: 50%;
+  background: repeating-conic-gradient(
+    from 0deg,
+    rgb(233 162 59 / 0.32) 0deg 0.35deg,
+    transparent 0.35deg 6deg
+  );
+  /* Thin annulus, so the ticks read as a rim scale rather than a filled disc. */
+  mask-image: radial-gradient(circle at 50% 50%, transparent 68%, #000 70%, #000 76%, transparent 78%);
+  animation: plate-spin 120s linear infinite;
+}
+
+.plateCore {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 5px;
+  height: 5px;
+  translate: -50% -50%;
+  border-radius: 50%;
+  background: var(--amber);
+  box-shadow: 0 0 26px 5px rgb(233 162 59 / 0.3);
+}
+
+@keyframes plate-spin {
+  to {
+    rotate: 360deg;
+  }
+}
+
+.meta {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  gap: 2rem;
+  padding: 7rem 4.5rem 0;
+  font-family: var(--shot-mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+
+.hero {
+  position: relative;
+  display: flex;
+  min-height: calc(100dvh - 7rem);
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 4.5rem 6rem;
+}
+
+.kicker {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-family: var(--shot-mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--amber);
+}
+
+.kicker::after {
+  content: "";
+  height: 1px;
+  width: clamp(3rem, 14vw, 13rem);
+  background: linear-gradient(to right, var(--amber), transparent);
+}
+
+.title {
+  margin: 2.25rem 0 0;
+  font-family: var(--shot-display);
+  font-size: clamp(5rem, 16.5vw, 17rem);
+  font-weight: 300;
+  line-height: 0.82;
+  letter-spacing: -0.045em;
+}
+
+/* Each line is clipped so the glyphs can rise out of nothing. */
+.line {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.06em;
+}
+
+.lineInner {
+  display: block;
+}
+
+.indent {
+  padding-left: clamp(2rem, 13vw, 13.5rem);
+  font-style: italic;
+  color: var(--amber);
+}
+
+.lede {
+  max-width: 34ch;
+  margin: 3.5rem 0 0;
+  font-size: 14.5px;
+  line-height: 1.7;
+  color: var(--dim);
+}
+
+.scrollHint {
+  position: absolute;
+  bottom: 2.5rem;
+  left: 4.5rem;
+  font-family: var(--shot-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgb(239 233 223 / 0.28);
+}
+
+.log {
+  position: relative;
+  padding: 10rem 4.5rem 12rem;
+  border-top: 1px solid var(--faint);
+}
+
+.logHead {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--shot-mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgb(239 233 223 / 0.3);
+  padding-bottom: 1.5rem;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 5rem 1fr 11rem 7rem;
+  align-items: baseline;
+  gap: 2rem;
+  padding: 1.6rem 0;
+  border-top: 1px solid var(--faint);
+  transition: color 0.4s ease;
+}
+
+.row:hover {
+  color: var(--amber);
+}
+
+.rowIndex {
+  font-family: var(--shot-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  color: rgb(239 233 223 / 0.3);
+}
+
+.rowName {
+  font-family: var(--shot-display);
+  font-size: clamp(1.4rem, 2.6vw, 2.3rem);
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+.rowNote,
+.rowDate {
+  font-family: var(--shot-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgb(239 233 223 / 0.34);
+}
+
+.rowDate {
+  text-align: right;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .grid,
+  .lamp {
+    mask-image: none;
+    opacity: 0.5;
+  }
+}
