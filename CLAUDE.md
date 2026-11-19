@@ -100,3 +100,19 @@ something thin.
 Changes are verified in a real browser at 1440×900 before being handed over:
 load the route, screenshot it, check the console, watch the motion actually
 land. Code that type-checks is not the same as a design that works.
+
+## Design context
+
+Two files at the root carry the design brief for agents:
+
+- **`PRODUCT.md`** — strategy. Register (`product`), audience (design
+  engineering hiring managers), anti-references, and five design principles.
+  The load-bearing one: *range is the argument*. A shot that resembles the
+  previous one is a wasted day even if it is good.
+- **`DESIGN.md`** — the **shell's** visual system only, under the north star
+  "The Specimen Case". It explicitly does not apply to shots, and shots must
+  never conform to it. Its last section is a **shot ledger**: an exclusion
+  list of palettes, typefaces and motion ideas already used. Append a row
+  when a shot ships, and check it before committing a direction.
+
+`.impeccable/design.json` is the machine-readable sidecar for the same system.

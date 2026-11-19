@@ -1,0 +1,1347 @@
+/* 0002 — Press Run
+   A black plate and one spot colour, printed on a cool stock.
+   Restrained: the greys carry the whole surface and the spot colour appears
+   only on data. Every value is derived in OKLCH, then written as hex so the
+   dimmed states can be composited up front instead of blended live. */
+
+.desk {
+  /* Neutrals, all tinted to one hue so nothing reads as a pure grey. */
+  --ground: #e6e7eb;
+  --paper: #f6f7f9;
+  --raised: #fcfcfe;
+  --sunk: #f0f1f4;
+
+  --ink: #212229;
+  --ink-2: #55565d;
+  --ink-3: #7e8086;
+  --ink-4: #a8a9ae;
+
+  --rule: #dddee1;
+  --rule-2: #ecedef;
+
+  /* The spot colour. 6.1:1 on the stock, so it is legible as text as well as
+     as a mark, which is why there only needs to be one of it. */
+  --accent: #a2326d;
+  --accent-mid: #c27da2;
+  --accent-dim: #d6acc4;
+  --accent-wash: #f6e9f0;
+
+  /* Reserved for the generated summary, and used nowhere else. */
+  --assist: #5e679d;
+
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --plate: 0;
+
+  position: fixed;
+  inset: 0;
+  padding: 60px 20px 0;
+  background: var(--ground);
+  color: var(--ink);
+  font-family: var(--shot-sans);
+  font-size: 13px;
+  line-height: 1.45;
+  letter-spacing: -0.006em;
+  overflow: hidden;
+}
+
+.desk[data-printed] {
+  --plate: 1;
+}
+
+.tnum {
+  font-variant-numeric: tabular-nums;
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.icon {
+  width: 15px;
+  height: 15px;
+  flex: none;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* ── the sheet ────────────────────────────────────────────────────────────── */
+
+.sheet {
+  position: relative;
+  display: grid;
+  grid-template-columns: 236px minmax(0, 1fr);
+  grid-template-rows: minmax(0, 100%);
+  width: 100%;
+  height: 100%;
+  border: 1px solid var(--rule);
+  border-bottom: 0;
+  border-radius: 13px 13px 0 0;
+  box-shadow: 0 24px 60px -40px rgb(33 34 41 / 0.3);
+  overflow: hidden;
+
+  /* Stock, not a surface. A background layer on the sheet itself rather than an
+     overlay element: a sheet-sized layer over the whole report is one more
+     thing the compositor must keep in step with a scrolling container, and that
+     is exactly what used to tear. The faintness is baked into the SVG. */
+  background-color: var(--paper);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+}
+
+/* The report is drawn for a 1400px sheet and is never rearranged below it.
+   Between 1024 and 1400 the whole sheet scales instead, so a narrower desktop
+   sees the same composition smaller rather than a different one. `zoom` re-runs
+   layout, so type stays crisp where a transform would blur it. */
+@media (max-width: 1399px) {
+  .sheet {
+    zoom: 0.88;
+  }
+}
+
+@media (max-width: 1199px) {
+  .sheet {
+    zoom: 0.76;
+  }
+}
+
+/* Plate one: everything structural inks first, then the spot plate strikes. */
+.rail,
+.chrome,
+.titleBlock,
+.stats,
+.chartBlock,
+.causeBlock,
+.side,
+.askWrap {
+  opacity: var(--plate);
+  transition: opacity 560ms var(--ease) var(--pd, 0ms);
+}
+
+.chrome {
+  --pd: 40ms;
+}
+.titleBlock {
+  --pd: 80ms;
+}
+.stats {
+  --pd: 120ms;
+}
+.chartBlock {
+  --pd: 160ms;
+}
+.side {
+  --pd: 200ms;
+}
+.causeBlock {
+  --pd: 240ms;
+}
+.askWrap {
+  --pd: 320ms;
+}
+
+/* ── nav rail ─────────────────────────────────────────────────────────────── */
+
+.rail {
+  display: flex;
+  flex-direction: column;
+  padding: 18px 13px 14px;
+  border-right: 1px solid var(--rule-2);
+  background: var(--sunk);
+}
+
+.wordmark {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 0 8px 22px;
+  font-size: 15.5px;
+  font-weight: 600;
+  letter-spacing: -0.028em;
+}
+
+/* The mark is a registration target: two plates, slightly out of true. */
+.regMark {
+  position: relative;
+  width: 16px;
+  height: 16px;
+  flex: none;
+}
+
+.regMark i {
+  position: absolute;
+  width: 11px;
+  height: 11px;
+  border-radius: 3px;
+}
+
+.regMark i:first-child {
+  inset: 0 auto auto 0;
+  background: var(--ink);
+}
+
+.regMark i:last-child {
+  inset: auto 0 0 auto;
+  background: var(--accent);
+}
+
+.navList {
+  list-style: none;
+  margin: 0 0 2px;
+  padding: 0;
+}
+
+.navItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 6.5px 9px;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: var(--ink-2);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 450;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    background-color 150ms ease,
+    color 150ms ease;
+}
+
+.navItem .icon {
+  color: var(--ink-4);
+  transition: color 150ms ease;
+}
+
+.navItem:hover {
+  background: rgb(33 34 41 / 0.04);
+  color: var(--ink);
+}
+
+.navItem:hover .icon {
+  color: var(--ink-3);
+}
+
+.navItem[data-active] {
+  background: var(--raised);
+  box-shadow: 0 0 0 1px var(--rule);
+  color: var(--ink);
+  font-weight: 550;
+}
+
+.navItem[data-active] .icon {
+  color: var(--ink);
+}
+
+.navCount {
+  margin-left: auto;
+  font-size: 12px;
+  color: var(--ink-3);
+}
+
+.viewDot {
+  width: 10px;
+  height: 10px;
+  flex: none;
+  margin-left: 2px;
+  border-radius: 3px;
+  background: var(--accent);
+  opacity: 0.9;
+}
+
+.viewLabel {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Sentence case, because a tracked capital label is a voice this report does
+   not need: position and weight already say what these are. */
+.railLabel {
+  margin: 18px 0 6px;
+  padding: 0 9px;
+  font-size: 11.5px;
+  font-weight: 500;
+  color: var(--ink-3);
+}
+
+.railFoot {
+  margin-top: auto;
+  padding-top: 18px;
+}
+
+.meter {
+  padding: 12px 12px 13px;
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  background: var(--raised);
+}
+
+.meter .railLabel {
+  margin: 0 0 8px;
+  padding: 0;
+}
+
+.meterValue {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  margin: 0 0 10px;
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: -0.022em;
+}
+
+.meterOf {
+  font-size: 11.5px;
+  font-weight: 400;
+  letter-spacing: 0;
+  color: var(--ink-3);
+}
+
+.meterBar {
+  display: flex;
+  gap: 2px;
+  height: 7px;
+}
+
+.meterBar i {
+  flex: 1;
+  border-radius: 2px;
+  background: var(--rule);
+}
+
+.meterBar i[data-on] {
+  background: var(--accent-mid);
+}
+
+.meterNote {
+  margin: 10px 0 0;
+  font-size: 11.5px;
+  line-height: 1.4;
+  color: var(--ink-3);
+}
+
+.user {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 15px;
+  padding: 0 5px;
+}
+
+.avatar {
+  display: grid;
+  place-items: center;
+  width: 27px;
+  height: 27px;
+  flex: none;
+  border: 1px solid var(--rule);
+  border-radius: 50%;
+  background: var(--raised);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0;
+  color: var(--ink-2);
+}
+
+.user strong {
+  display: block;
+  font-size: 12.5px;
+  font-weight: 550;
+}
+
+.user em {
+  display: block;
+  font-size: 11.5px;
+  font-style: normal;
+  color: var(--ink-3);
+}
+
+/* ── chrome row ───────────────────────────────────────────────────────────── */
+
+.column {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+}
+
+.chrome {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  height: 52px;
+  flex: none;
+  padding: 0 20px 0 22px;
+  border-bottom: 1px solid var(--rule-2);
+}
+
+.crumbs {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.tenant {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 5px 8px 5px 6px;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 550;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color 150ms ease;
+}
+
+.tenant:hover {
+  background: rgb(33 34 41 / 0.04);
+}
+
+.tenant .icon {
+  width: 13px;
+  height: 13px;
+  color: var(--ink-4);
+}
+
+.tenantMark {
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 6px;
+  background: var(--ink);
+  color: var(--paper);
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.live {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 2.5px 8px 2.5px 6px;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  font-size: 11.5px;
+  font-weight: 450;
+  color: var(--ink-3);
+}
+
+.live i {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.slash {
+  color: var(--ink-4);
+}
+
+.crumb {
+  font-size: 13px;
+  font-weight: 450;
+  color: var(--ink-2);
+}
+
+.segmented {
+  display: flex;
+  flex: none;
+  margin-left: 10px;
+  padding: 2.5px;
+  border-radius: 8px;
+  background: var(--sunk);
+}
+
+.segment {
+  padding: 3.5px 10px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--ink-3);
+  font: inherit;
+  font-size: 12.5px;
+  font-weight: 450;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    background-color 150ms ease,
+    color 150ms ease;
+}
+
+.segment:hover {
+  color: var(--ink);
+}
+
+.segment[data-active] {
+  background: var(--raised);
+  box-shadow:
+    0 0 0 1px var(--rule),
+    0 1px 2px rgb(33 34 41 / 0.06);
+  color: var(--ink);
+  font-weight: 550;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+  flex: none;
+}
+
+.ghost,
+.solid {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font: inherit;
+  font-size: 12.5px;
+  font-weight: 550;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    background-color 150ms ease,
+    border-color 150ms ease,
+    color 150ms ease;
+}
+
+.ghost {
+  border: 1px solid var(--rule);
+  background: var(--raised);
+  color: var(--ink-2);
+}
+
+.ghost:hover {
+  border-color: var(--ink-4);
+  color: var(--ink);
+}
+
+.solid {
+  border: 1px solid var(--ink);
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.solid:hover {
+  background: #15161b;
+}
+
+/* ── report body ──────────────────────────────────────────────────────────── */
+
+.body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 352px;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: var(--ink-4) transparent;
+}
+
+.body::-webkit-scrollbar {
+  width: 10px;
+}
+
+.body::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background: var(--rule);
+}
+
+.body::-webkit-scrollbar-thumb:hover {
+  background: var(--ink-4);
+}
+
+.report {
+  padding: 14px 28px 102px;
+  min-width: 0;
+}
+
+.titleBlock {
+  padding-bottom: 12px;
+}
+
+.title {
+  position: relative;
+  display: inline-block;
+  margin: 0;
+  font-size: 30px;
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+}
+
+/* The spot plate landing out of registration, once, on the way in. */
+.titleGhost {
+  position: absolute;
+  inset: 0;
+  color: var(--accent);
+  transform: translate(3px, -3px);
+  opacity: 0.8;
+  transition:
+    transform 780ms var(--ease) 180ms,
+    opacity 420ms linear 420ms;
+}
+
+.desk[data-printed] .titleGhost {
+  transform: none;
+  opacity: 0;
+}
+
+.subtitle {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin: 6px 0 0;
+  font-size: 12.5px;
+  color: var(--ink-3);
+}
+
+.dot {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: var(--ink-4);
+}
+
+/* ── headline figures ─────────────────────────────────────────────────────── */
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  border-top: 1px solid var(--rule-2);
+  border-bottom: 1px solid var(--rule-2);
+}
+
+.stat {
+  padding: 12px 20px 13px;
+  border-left: 1px solid var(--rule-2);
+}
+
+.stat:first-child {
+  padding-left: 0;
+  border-left: 0;
+}
+
+.stat .icon {
+  color: var(--ink-4);
+}
+
+.statLabel {
+  margin: 8px 0 0;
+  font-size: 12px;
+  font-weight: 450;
+  color: var(--ink-3);
+}
+
+.statValue {
+  margin: 4px 0 0;
+  font-size: 30px;
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.035em;
+}
+
+.statSub {
+  margin: 4px 0 0;
+  font-size: 11.5px;
+  white-space: nowrap;
+  color: var(--ink-3);
+}
+
+/* ── chart ────────────────────────────────────────────────────────────────── */
+
+.blockHead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 11px;
+}
+
+.blockHead h2 {
+  margin: 0;
+  font-size: 14.5px;
+  font-weight: 600;
+  letter-spacing: -0.016em;
+}
+
+.blockHead p {
+  margin: 0;
+  font-size: 12px;
+  color: var(--ink-3);
+}
+
+.chartBlock {
+  padding: 18px 0 0;
+}
+
+.chart {
+  display: flex;
+  height: 174px;
+}
+
+.axis {
+  position: relative;
+  width: 46px;
+  flex: none;
+}
+
+.axis span {
+  position: absolute;
+  right: 12px;
+  top: calc(var(--t) * 100%);
+  transform: translateY(-50%);
+  font-size: 11px;
+  color: var(--ink-3);
+}
+
+.plot {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  cursor: crosshair;
+  outline: none;
+}
+
+.plot:focus-visible {
+  box-shadow: 0 0 0 2px var(--accent);
+  border-radius: 4px;
+}
+
+/* Drawn over the bars, not under them. A rule crossing a column is the mark a
+   second pass would leave, and painting it on top produces that crossing for
+   free: no blend mode, no composited layer per bar. */
+.grid {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.grid i {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(var(--t) * 100%);
+  height: 1px;
+  background: rgb(33 34 41 / 0.07);
+}
+
+.grid i:last-child {
+  background: rgb(33 34 41 / 0.16);
+}
+
+.bars {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  gap: 3px;
+  align-items: flex-end;
+}
+
+.barSlot {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+}
+
+.bar {
+  width: 100%;
+  max-width: 46px;
+  margin: 0 auto;
+  height: calc(var(--h) * 100%);
+  min-height: 2px;
+  border-radius: 3px 3px 0 0;
+  background: var(--accent);
+  transform-origin: bottom;
+  transform: translate(2px, -2px) scaleY(0.02);
+  opacity: 0;
+  transition:
+    transform 440ms var(--ease) calc(var(--i) * 18ms + 240ms),
+    opacity 240ms linear calc(var(--i) * 18ms + 240ms),
+    background-color 140ms ease;
+}
+
+.desk[data-printed] .bar {
+  transform: none;
+  opacity: 1;
+}
+
+/* Scrubbing drops the rest of the run back so the read is unambiguous. The
+   dimmed value is the spot colour already composited against the stock,
+   because a filter or an opacity here would promote all thirty bars to their
+   own layers on every pointer move. A background swap is a plain repaint. */
+.plot[data-scrubbing] .bar {
+  background: var(--accent-dim);
+}
+
+.plot[data-scrubbing] .barSlot[data-active] .bar {
+  background: var(--accent);
+}
+
+.rule {
+  z-index: 3;
+  position: absolute;
+  top: -6px;
+  bottom: 0;
+  left: calc(var(--x) * 100%);
+  width: 1px;
+  background: var(--accent);
+  pointer-events: none;
+}
+
+.rule::before {
+  content: "";
+  position: absolute;
+  top: -3px;
+  left: -2px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.readout {
+  position: absolute;
+  top: 4px;
+  left: calc(var(--x) * 100%);
+  margin-left: 12px;
+  min-width: 142px;
+  padding: 10px 13px 11px;
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  background: var(--raised);
+  box-shadow: 0 12px 28px -14px rgb(33 34 41 / 0.3);
+  pointer-events: none;
+  z-index: 4;
+}
+
+.readout[data-flip] {
+  margin-left: 0;
+  transform: translateX(calc(-100% - 12px));
+}
+
+.readoutDay {
+  margin: 0;
+  font-size: 11.5px;
+  color: var(--ink-3);
+}
+
+.readoutValue {
+  display: flex;
+  align-items: baseline;
+  gap: 5px;
+  margin: 4px 0 0;
+  font-size: 19px;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+}
+
+.readoutValue span:last-child {
+  font-size: 11.5px;
+  font-weight: 400;
+  letter-spacing: 0;
+  color: var(--ink-3);
+}
+
+.readoutSub {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 5px 0 0;
+  font-size: 11.5px;
+  color: var(--ink-2);
+}
+
+.readoutSub i {
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+  background: var(--accent);
+}
+
+/* ── the two halves ───────────────────────────────────────────────────────── */
+
+.halves {
+  display: flex;
+  gap: 24px;
+  margin: 13px 0 0 46px;
+}
+
+.half {
+  flex-basis: 0;
+  min-width: 0;
+  transition: opacity 180ms ease;
+}
+
+.half[data-dim] {
+  opacity: 0.38;
+}
+
+.halfRule {
+  display: block;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--accent-mid);
+}
+
+.halfLabel {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin: 8px 0 0;
+  font-size: 12px;
+  color: var(--ink-3);
+}
+
+.halfLabel em {
+  font-size: 11.5px;
+  font-style: normal;
+  color: var(--accent);
+}
+
+.halfValue {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin: 3px 0 0;
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+}
+
+.halfSub {
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0;
+  color: var(--ink-3);
+}
+
+.delta {
+  padding: 2px 7px;
+  border-radius: 6px;
+  background: var(--accent-wash);
+  font-size: 11.5px;
+  font-weight: 550;
+  letter-spacing: 0;
+  color: var(--accent);
+}
+
+/* ── causes ───────────────────────────────────────────────────────────────── */
+
+.causeBlock {
+  padding: 16px 0 0;
+  margin-top: 14px;
+  border-top: 1px solid var(--rule-2);
+}
+
+.causeBody {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 282px;
+  gap: 32px;
+  align-items: start;
+}
+
+/* Five blocks, each as wide as its share. A single grid read as one smooth
+   ramp; the gutters are what make the categories countable. */
+.waffle {
+  display: flex;
+  align-items: start;
+  gap: 10px;
+}
+
+.waffleGroup {
+  display: grid;
+  grid-template-rows: repeat(4, auto);
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 1fr);
+  flex-basis: 0;
+  gap: 3px;
+}
+
+.waffle i {
+  aspect-ratio: 1;
+  border-radius: 2.5px;
+  background: var(--cell);
+  opacity: var(--plate);
+  transition:
+    opacity 300ms var(--ease) calc(var(--i) * 4ms + 420ms),
+    background-color 160ms ease;
+}
+
+.waffle[data-isolating] i {
+  background: var(--rule);
+  transition-delay: 0ms;
+}
+
+.waffle[data-isolating] .waffleGroup[data-on] i {
+  background: var(--cell);
+}
+
+.legend {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.legendRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 5px 4px;
+  border: 0;
+  border-bottom: 1px solid var(--rule-2);
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: 12.5px;
+  text-align: left;
+  cursor: default;
+  transition: opacity 160ms ease;
+}
+
+.legendRow[data-dim] {
+  opacity: 0.34;
+}
+
+.swatch {
+  width: 11px;
+  height: 11px;
+  flex: none;
+  border-radius: 3px;
+  background: var(--cell);
+}
+
+.legendName {
+  flex: 1;
+  min-width: 0;
+  font-weight: 450;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.legendKm {
+  font-size: 12px;
+  color: var(--ink-2);
+}
+
+.legendPct {
+  width: 38px;
+  text-align: right;
+  font-size: 12px;
+  color: var(--ink-3);
+}
+
+/* ── right rail ───────────────────────────────────────────────────────────── */
+
+.side {
+  padding: 18px 22px 106px;
+  border-left: 1px solid var(--rule-2);
+}
+
+/* The one place a second hue appears, because this panel is the one thing on
+   the page the report did not write itself. */
+.summary {
+  padding: 14px 16px 4px;
+  border: 1px solid rgb(94 103 157 / 0.22);
+  border-radius: 12px;
+  background: var(--raised);
+}
+
+.summaryLabel {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin: 0 0 14px;
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--assist);
+}
+
+.summaryLabel .icon {
+  width: 13px;
+  height: 13px;
+}
+
+.finding {
+  padding-bottom: 13px;
+  margin-bottom: 13px;
+  border-bottom: 1px solid var(--rule-2);
+}
+
+.finding:last-child {
+  border-bottom: 0;
+}
+
+.finding h3 {
+  margin: 0;
+  font-size: 13.5px;
+  font-weight: 600;
+  line-height: 1.32;
+  letter-spacing: -0.014em;
+}
+
+.finding p {
+  margin: 5px 0 0;
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--ink-3);
+}
+
+.depots {
+  padding-top: 22px;
+  margin-top: 22px;
+  border-top: 1px solid var(--rule-2);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th,
+.table td {
+  padding: 7.5px 0;
+  text-align: right;
+  font-weight: 400;
+  white-space: nowrap;
+}
+
+.table thead th {
+  padding-bottom: 9px;
+  border-bottom: 1px solid var(--rule-2);
+  font-size: 11.5px;
+  font-weight: 450;
+  color: var(--ink-3);
+}
+
+.table thead th:first-child,
+.table tbody th,
+.table tfoot th {
+  text-align: left;
+}
+
+.table tbody th {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 13px;
+  font-weight: 450;
+}
+
+.table tbody td {
+  font-size: 12.5px;
+  color: var(--ink-2);
+}
+
+.table tbody tr {
+  border-bottom: 1px solid var(--rule-2);
+  transition: background-color 140ms ease;
+}
+
+.table tbody tr:hover {
+  background: rgb(33 34 41 / 0.03);
+}
+
+.table tbody td:nth-child(3) {
+  width: 58px;
+  padding-left: 12px;
+}
+
+.table tfoot th,
+.table tfoot td {
+  padding-top: 11px;
+  border-top: 1px solid var(--rule);
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.depotMark {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  flex: none;
+  border: 1px solid var(--rule);
+  border-radius: 50%;
+  background: var(--raised);
+  font-size: 9.5px;
+  font-weight: 600;
+  color: var(--ink-3);
+}
+
+/* Excess wait, read as a length as well as a number. */
+.ewtBar {
+  display: block;
+  width: 100%;
+  height: 2px;
+  margin-top: 4px;
+  border-radius: 2px;
+  background: linear-gradient(
+    to right,
+    var(--accent-mid) 0 calc(var(--w) * 100%),
+    var(--rule) calc(var(--w) * 100%) 100%
+  );
+}
+
+/* ── ask bar ──────────────────────────────────────────────────────────────── */
+
+.askWrap::before {
+  content: "";
+  position: absolute;
+  inset: -26px;
+  z-index: -1;
+  pointer-events: none;
+  background: linear-gradient(
+    to top,
+    var(--paper) 0 46%,
+    rgb(246 247 249 / 0.92) 70%,
+    rgb(246 247 249 / 0)
+  );
+}
+
+.askWrap {
+  position: absolute;
+  left: 28px;
+  right: calc(352px + 28px);
+  bottom: 24px;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.suggestions {
+  list-style: none;
+  width: min(100%, 580px);
+  margin: 0;
+  padding: 6px;
+  border: 1px solid var(--rule);
+  border-radius: 12px;
+  background: var(--raised);
+  box-shadow: 0 18px 44px -26px rgb(33 34 41 / 0.4);
+}
+
+.suggestion {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  width: 100%;
+  padding: 7px 9px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--ink-2);
+  font: inherit;
+  font-size: 12.5px;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    background-color 140ms ease,
+    color 140ms ease;
+}
+
+.suggestion .icon {
+  color: var(--ink-4);
+}
+
+.suggestion:hover {
+  background: rgb(33 34 41 / 0.04);
+  color: var(--ink);
+}
+
+.ask {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: min(100%, 580px);
+  padding: 9px 10px 9px 14px;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  background: var(--raised);
+  box-shadow: 0 10px 26px -20px rgb(33 34 41 / 0.35);
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.ask .icon {
+  color: var(--assist);
+}
+
+/* The pill carries focus for the field inside it, so the input itself must not
+   also draw a rectangle within the rounded shape. */
+.askWrap[data-open] .ask {
+  border-color: var(--accent);
+  box-shadow:
+    0 0 0 3px var(--accent-wash),
+    0 10px 26px -20px rgb(33 34 41 / 0.35);
+}
+
+.askInput {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+  font-size: 13px;
+  outline: none;
+}
+
+.askInput:focus-visible {
+  outline: none;
+}
+
+.askInput::placeholder {
+  color: var(--ink-3);
+}
+
+.kbd {
+  padding: 3px 7px;
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  background: var(--sunk);
+  font-size: 11px;
+  color: var(--ink-3);
+}
+
+/* ── focus ────────────────────────────────────────────────────────────────── */
+
+.desk :focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}

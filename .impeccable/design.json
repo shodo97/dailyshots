@@ -1,0 +1,188 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-10T00:00:00.000Z",
+  "title": "Design System: dailyshots",
+  "extensions": {
+    "colorMeta": {
+      "ink": {
+        "role": "neutral",
+        "displayName": "Plate Black",
+        "canonical": "oklch(13% 0.004 285)",
+        "tonalRamp": ["oklch(15% 0.004 285)", "oklch(26% 0.004 285)", "oklch(37% 0.004 285)", "oklch(49% 0.004 285)", "oklch(60% 0.004 285)", "oklch(72% 0.004 285)", "oklch(83% 0.004 285)", "oklch(95% 0.004 285)"]
+      },
+      "ink-raised": {
+        "role": "neutral",
+        "displayName": "Case Interior",
+        "canonical": "oklch(17% 0.006 285)",
+        "tonalRamp": ["oklch(15% 0.006 285)", "oklch(26% 0.006 285)", "oklch(37% 0.006 285)", "oklch(49% 0.006 285)", "oklch(60% 0.006 285)", "oklch(72% 0.006 285)", "oklch(83% 0.006 285)", "oklch(95% 0.006 285)"]
+      },
+      "bone": {
+        "role": "neutral",
+        "displayName": "Bone",
+        "canonical": "oklch(96.2% 0.003 90)",
+        "tonalRamp": ["oklch(15% 0.003 90)", "oklch(26% 0.003 90)", "oklch(37% 0.003 90)", "oklch(49% 0.003 90)", "oklch(60% 0.003 90)", "oklch(72% 0.003 90)", "oklch(83% 0.003 90)", "oklch(95% 0.003 90)"]
+      },
+      "bone-dim": {
+        "role": "neutral",
+        "displayName": "Bone Dim",
+        "canonical": "oklch(66% 0.008 285)",
+        "tonalRamp": ["oklch(15% 0.008 285)", "oklch(26% 0.008 285)", "oklch(37% 0.008 285)", "oklch(49% 0.008 285)", "oklch(60% 0.008 285)", "oklch(72% 0.008 285)", "oklch(83% 0.008 285)", "oklch(95% 0.008 285)"]
+      },
+      "bone-faint": {
+        "role": "neutral",
+        "displayName": "Bone Faint",
+        "canonical": "oklch(45% 0.009 285)",
+        "tonalRamp": ["oklch(15% 0.009 285)", "oklch(26% 0.009 285)", "oklch(37% 0.009 285)", "oklch(49% 0.009 285)", "oklch(60% 0.009 285)", "oklch(72% 0.009 285)", "oklch(83% 0.009 285)", "oklch(95% 0.009 285)"]
+      },
+      "hairline": {
+        "role": "neutral",
+        "displayName": "Hairline",
+        "canonical": "rgb(255 255 255 / 0.09)",
+        "tonalRamp": ["rgb(255 255 255 / 0.03)", "rgb(255 255 255 / 0.06)", "rgb(255 255 255 / 0.09)", "rgb(255 255 255 / 0.12)", "rgb(255 255 255 / 0.18)", "rgb(255 255 255 / 0.26)", "rgb(255 255 255 / 0.4)", "rgb(255 255 255 / 0.6)"]
+      },
+      "hairline-strong": {
+        "role": "neutral",
+        "displayName": "Hairline Strong",
+        "canonical": "rgb(255 255 255 / 0.18)",
+        "tonalRamp": ["rgb(255 255 255 / 0.03)", "rgb(255 255 255 / 0.06)", "rgb(255 255 255 / 0.09)", "rgb(255 255 255 / 0.12)", "rgb(255 255 255 / 0.18)", "rgb(255 255 255 / 0.26)", "rgb(255 255 255 / 0.4)", "rgb(255 255 255 / 0.6)"]
+      }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "The home headline. Once per site, with the second line in italic Bone Dim." },
+      "headline": { "displayName": "Headline", "purpose": "Info page title and the below-1024px notice." },
+      "title": { "displayName": "Title", "purpose": "Shot title in the info panel rail." },
+      "body": { "displayName": "Body", "purpose": "Info page prose, capped at 720px so the measure lands inside 65 to 75ch." },
+      "body-small": { "displayName": "Body Small", "purpose": "Card captions and the shot note." },
+      "label": { "displayName": "Label", "purpose": "Nav and section metadata. Uppercase mono; tracking carries it, not weight." },
+      "label-small": { "displayName": "Label Small", "purpose": "Filter chips, chrome pills, tool tags, prev and next." }
+    },
+    "shadows": [
+      { "name": "card-lift", "value": "0 24px 60px -28px var(--accent)", "purpose": "Shot card on hover, tinted with the shot accent rather than black. The only elevation in the grid." },
+      { "name": "device-weight", "value": "0 60px 140px -50px rgba(0,0,0,0.9)", "purpose": "The phone frame holding a mobile-target shot. The one object pretending to be physical, so the one black shadow." },
+      { "name": "chrome-blur", "value": "backdrop-filter: blur(12px)", "purpose": "Chrome pills and the info rail, which float over an unknown shot canvas and must stay readable against anything. The documented exception to the glassmorphism ban." }
+    ],
+    "motion": [
+      { "name": "ease-out-quint", "value": "cubic-bezier(0.22, 1, 0.36, 1)", "purpose": "The only easing curve in the shell. No bounce, no elastic." },
+      { "name": "duration-color", "value": "300ms", "purpose": "Colour and border transitions on links, chips and captions." },
+      { "name": "duration-transform", "value": "500ms", "purpose": "Card lift, border shift and poster-to-video cross-fade." },
+      { "name": "duration-entrance", "value": "750ms", "purpose": "The shell-rise entrance: 14px rise plus fade." },
+      { "name": "stagger-step", "value": "55ms", "purpose": "Per-item entrance delay, capped at the 8th item so a large grid never crawls." }
+    ],
+    "breakpoints": [
+      { "name": "md", "value": "768px" },
+      { "name": "lg", "value": "1024px" },
+      { "name": "canvas-max", "value": "1480px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Shot Card",
+      "kind": "card",
+      "refersTo": "card-shot",
+      "description": "The signature component and the only card in the system. Poster at rest, hover loop on pointer, border and glow borrowed from the shot accent.",
+      "html": "<a class='ds-card-shot' href='#' style='--accent:#e9a23b'><figure class='ds-card-shot__frame'><span class='ds-card-shot__wash'></span><span class='ds-card-shot__plate'>0001</span></figure><figcaption class='ds-card-shot__caption'><span class='ds-card-shot__n'>0001</span><span class='ds-card-shot__title'>First Light</span><span class='ds-card-shot__date'>10 OCT</span></figcaption></a>",
+      "css": ".ds-card-shot { display: block; text-decoration: none; width: 340px; } .ds-card-shot__frame { position: relative; margin: 0; display: block; aspect-ratio: 16 / 10; overflow: hidden; border-radius: 14px; border: 1px solid var(--color-hairline, rgb(255 255 255 / 0.09)); background: var(--color-ink-raised, #0e0e11); transition: transform 500ms cubic-bezier(0.22,1,0.36,1), border-color 500ms cubic-bezier(0.22,1,0.36,1), box-shadow 500ms cubic-bezier(0.22,1,0.36,1); } .ds-card-shot:hover .ds-card-shot__frame { transform: translateY(-4px); border-color: var(--accent); box-shadow: 0 24px 60px -28px var(--accent); } .ds-card-shot:focus-visible .ds-card-shot__frame { outline: 2px solid var(--accent); outline-offset: 3px; } .ds-card-shot__wash { position: absolute; inset: 0; background: radial-gradient(120% 120% at 20% 0%, color-mix(in oklab, var(--accent) 18%, transparent) 0%, transparent 60%); } .ds-card-shot__plate { position: absolute; inset: 0; display: grid; place-items: center; font-family: var(--font-display, Georgia, serif); font-size: 4.5rem; color: rgb(244 243 241 / 0.1); } .ds-card-shot__caption { display: flex; align-items: baseline; gap: 12px; margin-top: 14px; } .ds-card-shot__n { font-family: var(--font-mono, ui-monospace, monospace); font-size: 11px; font-variant-numeric: tabular-nums; color: var(--color-bone-faint, #5c5c64); transition: color 300ms; } .ds-card-shot:hover .ds-card-shot__n { color: var(--accent); } .ds-card-shot__title { flex: 1; font-size: 13.5px; color: var(--color-bone-dim, #9a9aa2); transition: color 300ms; } .ds-card-shot:hover .ds-card-shot__title { color: var(--color-bone, #f4f3f1); } .ds-card-shot__date { font-family: var(--font-mono, ui-monospace, monospace); font-size: 10px; letter-spacing: 0.1em; font-variant-numeric: tabular-nums; color: var(--color-bone-faint, #5c5c64); }"
+    },
+    {
+      "name": "Filter Chip",
+      "kind": "chip",
+      "refersTo": "chip-filter",
+      "description": "Gallery tag filter at rest. Transparent pill, Bone Faint label, hover lifts to Bone Dim.",
+      "html": "<button class='ds-chip-filter' type='button' aria-pressed='false'>motion</button>",
+      "css": ".ds-chip-filter { background: transparent; border: 0; border-radius: 999px; padding: 6px 12px; font-family: var(--font-mono, ui-monospace, monospace); font-size: 10px; text-transform: uppercase; letter-spacing: 0.16em; color: var(--color-bone-faint, #5c5c64); cursor: pointer; transition: color 300ms cubic-bezier(0.22,1,0.36,1); } .ds-chip-filter:hover { color: var(--color-bone-dim, #9a9aa2); } .ds-chip-filter:focus-visible { outline: 1px solid var(--color-hairline-strong, rgb(255 255 255 / 0.18)); outline-offset: 2px; }"
+    },
+    {
+      "name": "Filter Chip (active)",
+      "kind": "chip",
+      "refersTo": "chip-filter-active",
+      "description": "Selected filter. The only inversion in the system: Bone fill on Plate Black text, carrying the whole filter state.",
+      "html": "<button class='ds-chip-filter-active' type='button' aria-pressed='true'>all</button>",
+      "css": ".ds-chip-filter-active { background: var(--color-bone, #f4f3f1); color: var(--color-ink, #070708); border: 0; border-radius: 999px; padding: 6px 12px; font-family: var(--font-mono, ui-monospace, monospace); font-size: 10px; text-transform: uppercase; letter-spacing: 0.16em; cursor: pointer; transition: background 300ms cubic-bezier(0.22,1,0.36,1); } .ds-chip-filter-active:focus-visible { outline: 1px solid var(--color-bone, #f4f3f1); outline-offset: 2px; }"
+    },
+    {
+      "name": "Chrome Pill",
+      "kind": "nav",
+      "refersTo": "pill-chrome",
+      "description": "Fixed navigation over a live shot canvas. Blurred so it stays readable against any shot, pointer-events confined to the pill so the shot keeps the cursor.",
+      "html": "<a class='ds-pill-chrome' href='#'>index</a>",
+      "css": ".ds-pill-chrome { display: inline-block; text-decoration: none; background: rgb(0 0 0 / 0.35); border: 1px solid rgb(255 255 255 / 0.12); border-radius: 999px; padding: 6px 14px; font-family: var(--font-mono, ui-monospace, monospace); font-size: 10px; text-transform: uppercase; letter-spacing: 0.16em; color: rgb(255 255 255 / 0.7); backdrop-filter: blur(12px); transition: color 300ms, border-color 300ms; } .ds-pill-chrome:hover { color: #ffffff; border-color: rgb(255 255 255 / 0.3); } .ds-pill-chrome:focus-visible { outline: 1px solid #ffffff; outline-offset: 2px; }"
+    },
+    {
+      "name": "Tool Tag",
+      "kind": "chip",
+      "refersTo": "chip-tool",
+      "description": "Read-only pill listing what a shot was built with. Hairline border, no fill, never interactive.",
+      "html": "<span class='ds-chip-tool'>Motion</span>",
+      "css": ".ds-chip-tool { display: inline-block; border: 1px solid rgb(255 255 255 / 0.12); border-radius: 999px; padding: 4px 10px; font-family: var(--font-mono, ui-monospace, monospace); font-size: 9.5px; text-transform: uppercase; letter-spacing: 0.12em; color: rgb(255 255 255 / 0.45); }"
+    },
+    {
+      "name": "Info Panel",
+      "kind": "custom",
+      "refersTo": "panel-info",
+      "description": "Full-height right rail describing the current shot. Square corners because it is attached to the viewport edge. Desktop only; replaces the modal a system like this would otherwise reach for.",
+      "html": "<aside class='ds-panel-info' style='--accent:#e9a23b'><span class='ds-panel-info__n'>0001</span><h2 class='ds-panel-info__title'>First Light</h2><p class='ds-panel-info__date'>10 Oct 2026 / type, motion</p><p class='ds-panel-info__note'>An editorial opener for a fictional observatory archive.</p></aside>",
+      "css": ".ds-panel-info { display: flex; flex-direction: column; width: min(23rem, 88vw); height: 420px; padding: 28px; background: rgb(0 0 0 / 0.7); border-left: 1px solid rgb(255 255 255 / 0.1); backdrop-filter: blur(40px); } .ds-panel-info__n { font-family: var(--font-mono, ui-monospace, monospace); font-size: 11px; letter-spacing: 0.16em; font-variant-numeric: tabular-nums; color: var(--accent); } .ds-panel-info__title { margin: 28px 0 0; font-family: var(--font-display, Georgia, serif); font-size: 1.9rem; font-weight: 400; line-height: 1.1; letter-spacing: -0.01em; color: #ffffff; } .ds-panel-info__date { margin: 10px 0 0; font-family: var(--font-mono, ui-monospace, monospace); font-size: 10px; text-transform: uppercase; letter-spacing: 0.16em; color: rgb(255 255 255 / 0.35); } .ds-panel-info__note { margin: 32px 0 0; font-size: 13.5px; line-height: 1.65; color: rgb(255 255 255 / 0.6); }"
+    },
+    {
+      "name": "Return Button",
+      "kind": "button",
+      "refersTo": "button-return",
+      "description": "The one button with a visible border. Appears in the below-1024px notice, sending the viewer back to the index.",
+      "html": "<a class='ds-button-return' href='#'>back to index</a>",
+      "css": ".ds-button-return { display: inline-block; text-decoration: none; background: transparent; border: 1px solid var(--color-hairline-strong, rgb(255 255 255 / 0.18)); border-radius: 999px; padding: 10px 20px; font-family: var(--font-mono, ui-monospace, monospace); font-size: 10px; text-transform: uppercase; letter-spacing: 0.16em; color: var(--color-bone, #f4f3f1); transition: border-color 300ms cubic-bezier(0.22,1,0.36,1); } .ds-button-return:hover { border-color: var(--color-bone, #f4f3f1); } .ds-button-return:focus-visible { outline: 1px solid var(--color-bone, #f4f3f1); outline-offset: 3px; }"
+    },
+    {
+      "name": "Home Nav",
+      "kind": "nav",
+      "refersTo": null,
+      "description": "Baseline-aligned mono capitals. Two destinations, so no active indicator and no underline.",
+      "html": "<nav class='ds-nav-home'><a class='ds-nav-home__brand' href='#'>Shobhit Singh</a><span class='ds-nav-home__links'><a href='#'>info</a><a href='#'>github <span aria-hidden='true'>&#8599;</span></a></span></nav>",
+      "css": ".ds-nav-home { display: flex; align-items: baseline; justify-content: space-between; width: 520px; font-family: var(--font-mono, ui-monospace, monospace); font-size: 11px; text-transform: uppercase; } .ds-nav-home__brand { text-decoration: none; letter-spacing: 0.2em; color: var(--color-bone, #f4f3f1); transition: opacity 300ms; } .ds-nav-home__brand:hover { opacity: 0.6; } .ds-nav-home__links { display: flex; align-items: baseline; gap: 20px; letter-spacing: 0.16em; } .ds-nav-home__links a { text-decoration: none; color: var(--color-bone-faint, #5c5c64); transition: color 300ms; } .ds-nav-home__links a:hover { color: var(--color-bone, #f4f3f1); }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Specimen Case",
+    "overview": "The shell is a vitrine, not an exhibit. Its only job is to hold wildly unlike objects without competing with any of them, which makes discipline the whole design. The ground is a near-black that is almost but not quite neutral (#070708). Frames are hairlines. Labels are small mono capitals set like museum tags. There is no decoration anywhere, because decoration here would be the case arguing with the specimen.\n\nThe one structural consequence: the case has no colour of its own. Every colour that appears on a shell surface is borrowed from the shot being described, through meta.accent. A card's hover border, its glow, its index number, the accent in the info panel: all of it is the shot's colour, temporarily lent to the chrome. Remove the shots and the shell is monochrome.\n\nWhat this rejects, carried from PRODUCT.md: anything that reads as machine generated. No bento grids, no glassmorphism as decoration, no gradient text, no hero metric blocks, no violet-to-cyan on near-black. The shell's single piece of atmosphere is a soft radial tint of the shot's own accent behind each card, and it exists to keep light posters from floating on black.",
+    "keyCharacteristics": [
+      "Near-black ground, flat at rest, depth by tonal layering rather than shadow.",
+      "Hairline borders at 1px, never thicker, never coloured except on hover.",
+      "Mono capitals at 10 to 11px with 0.16em tracking as the entire label system.",
+      "One serif title per screen, and never more than one.",
+      "Every mutable number is tabular (.tnum), so nothing jitters.",
+      "Colour arrives only from the content."
+    ],
+    "rules": [
+      { "name": "The Borrowed Colour Rule", "body": "The shell never introduces a colour. If a shell surface is coloured, that colour is var(--accent) from the shot it describes. Hardcoding any hue into components/shell/ or app/ is prohibited.", "section": "colors" },
+      { "name": "The No-Pure-Value Rule", "body": "#000 and #fff are forbidden. The ground is #070708 and the light is #f4f3f1. Pure values make the dark look like an absence and the light like a flashbulb.", "section": "colors" },
+      { "name": "The Two-Voice Rule", "body": "Instrument Serif speaks once per screen, and only as the title. Everything else is mono capitals or, where there are sentences, Geist Sans. A third display voice in the shell is prohibited.", "section": "typography" },
+      { "name": "The Tabular Rule", "body": "Every number that can change between renders (shot index, date, count) carries .tnum. Numbers that reflow while animating look broken, and this project is largely numbers.", "section": "typography" },
+      { "name": "The Tracking-Not-Weight Rule", "body": "Small type earns presence from uppercase and 0.16em tracking at weight 400. Bolding 10px mono is prohibited; it muddies before it emphasises.", "section": "typography" },
+      { "name": "The Flat Case Rule", "body": "Shell surfaces are flat until hovered. Resting shadows, ambient glows and layered panels are prohibited. If a surface needs separating, use a hairline or a tonal step.", "section": "elevation" },
+      { "name": "The Content-Lit Rule", "body": "Hover shadows are tinted with var(--accent), never with black. Black shadow on a near-black ground is invisible work.", "section": "elevation" },
+      { "name": "The Occupied Lane Rule", "body": "Before choosing a direction, read the last three rows of the shot ledger. Dark ground with a single warm accent and a serif display is now spent. Reusing it is a wasted day even if the result is good, because PRODUCT.md makes range the argument.", "section": "components" }
+    ],
+    "dos": [
+      "Do keep every shell colour from the token set in app/globals.css, and take every accent from meta.accent at runtime.",
+      "Do use .tnum on any number that can change.",
+      "Do set small type as uppercase mono at 0.16em tracking, weight 400.",
+      "Do keep surfaces flat at rest and let hover be the only elevation, tinted with var(--accent).",
+      "Do keep borders at 1px, using Hairline at rest and Hairline Strong only for the two documented exceptions.",
+      "Do ease with var(--ease-out-quint) (cubic-bezier(0.22, 1, 0.36, 1)). 300ms for colour, 500ms for transform and opacity, 750ms for entrances.",
+      "Do gate every JS animation behind useReducedMotion(). CSS is already neutralised globally; JS is not.",
+      "Do let the grid breathe unevenly: 20px columns against 56px rows is the intended rhythm, not an oversight."
+    ],
+    "donts": [
+      "Don't let a shot use shell tokens (ink, bone, hairline, font-display, ease-out-quint). Shots declare their own fonts via next/font inside their own module and map them onto --shot-sans, --shot-display, --shot-mono. This is the project's one rule.",
+      "Don't import a shot statically. The registry's dynamic import is what keeps a WebGL piece out of the gallery bundle.",
+      "Don't introduce a hardcoded hue anywhere in components/shell/ or app/.",
+      "Don't add a second serif voice, or bold the mono labels.",
+      "Don't use #000 or #fff.",
+      "Don't use bento grids, glassmorphism as decoration, gradient text (background-clip: text), hero metric blocks, identical icon-and-heading card grids, or violet-to-cyan gradients on near-black. Carried verbatim from PRODUCT.md: anything that reads as machine generated on sight.",
+      "Don't use a coloured border-left or border-right above 1px as an accent stripe.",
+      "Don't reach for a modal. The info panel is a rail for a reason.",
+      "Don't nest a card inside a card.",
+      "Don't make a shot responsive. Below 1024px it shows the crafted notice.",
+      "Don't animate layout properties. Re-key and stagger instead."
+    ]
+  }
+}
