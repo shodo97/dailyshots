@@ -35,7 +35,7 @@ for (const shot of targets) {
 
   await page.goto(BASE + shot.route, { waitUntil: "networkidle" });
   // The chrome is navigation, not design — it has no place in the poster.
-  await page.addStyleTag({ content: "[data-chrome]{display:none!important}" });
+  await page.addStyleTag({ content: "[data-chrome],nextjs-portal{display:none!important}" });
   await page.evaluate(() => document.fonts.ready);
   // Let entrance animations finish before the shutter.
   await page.waitForTimeout(settle);

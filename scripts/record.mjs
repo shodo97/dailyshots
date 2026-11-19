@@ -48,7 +48,7 @@ const context = await browser.newContext({
 
 const page = await context.newPage();
 await page.goto(BASE + shot.route, { waitUntil: "networkidle" });
-await page.addStyleTag({ content: "[data-chrome]{display:none!important}" });
+await page.addStyleTag({ content: "[data-chrome],nextjs-portal{display:none!important}" });
 await page.evaluate(() => document.fonts.ready);
 await page.waitForTimeout(warmup * 1000);
 
