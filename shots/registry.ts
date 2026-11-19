@@ -1,6 +1,7 @@
 import type { ShotEntry } from "./types";
 import { meta as m0002 } from "./0002-press-run/meta";
 import { meta as m0001 } from "./0001-first-light/meta";
+import { meta as m0003 } from "./0003-chart-desk/meta";
 
 /**
  * Every shot, registered once. Order here does not matter — the gallery sorts
@@ -9,5 +10,6 @@ import { meta as m0001 } from "./0001-first-light/meta";
 export const shots: ShotEntry[] = [
   { meta: m0001, load: () => import("./0001-first-light") },
   { meta: m0002, load: () => import("./0002-press-run") },
+  { meta: m0003, load: () => import("./0003-chart-desk") },
   /* new-shot:anchor */
 ];
