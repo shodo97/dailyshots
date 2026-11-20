@@ -1,0 +1,1092 @@
+/* 0011 — Tidewater
+   The S-52 night colour table, read on a phone in a cockpit before dawn:
+   deep water darkest, shoal water the lightest blue, drying ground olive,
+   land a dim ochre, routes in dim magenta, almost no white. The red-light
+   mode swaps every token for the same luminance on the red channel only. */
+
+.root {
+  /* chrome */
+  --ground: #060a10;
+  --panel: #0b131c;
+  --panel-2: #111c28;
+  --rule: #172331;
+  --rule-strong: #22334a;
+  --text: #a9b7c6;
+  --text-2: #7a8c9f;
+  --text-3: #55667a;
+  --accent: #4fc1d1;
+  --route: #a8559f;
+  --warn: #c9a24a;
+  --danger: #cf5b4c;
+  --curve: #8aa6c2;
+
+  /* chart: mirrors NIGHT in data.ts */
+  --band-land: #2e2515;
+  --band-dry: #2b361a;
+  --band-shoal: #30608e;
+  --band-margin: #1d4066;
+  --band-safe: #0e2239;
+  --band-deepest: #050c16;
+  --safety: #a9bfd6;
+  --coast: #6b5631;
+  --land-text: #95805a;
+  --water-text: #6f8fb0;
+  --sounding: #4f6984;
+  --sounding-hi: #b3c8dd;
+  --lt-r: #e0503f;
+  --lt-g: #4cc27c;
+  --lt-w: #e6d27a;
+  --buoy-r: #9a3d33;
+  --buoy-g: #2f7f50;
+  --buoy-n: #9a8740;
+
+  /* timeline */
+  --tl-night: #070c13;
+  --tl-twi: #0b1420;
+  --tl-day: #0f1a28;
+  --sun-twi: #2b3d5b;
+  --sun-day: #7d6c41;
+
+  position: relative;
+  width: 390px;
+  min-height: 100%;
+  background: var(--ground);
+  color: var(--text);
+  font-family: var(--shot-sans), system-ui, sans-serif;
+  font-size: 15px;
+  line-height: 1.4;
+  -webkit-font-smoothing: antialiased;
+  caret-color: var(--accent);
+  accent-color: var(--accent);
+}
+
+.root[data-mode="red"] {
+  --ground: #080101;
+  --panel: #110302;
+  --panel-2: #1a0503;
+  --rule: #2a0904;
+  --rule-strong: #3f0e07;
+  --text: #ea5a3c;
+  --text-2: #b9442c;
+  --text-3: #85301e;
+  --accent: #ff6a48;
+  --route: #a8301c;
+  --warn: #ff7a50;
+  --danger: #ff5636;
+  --curve: #c8442a;
+
+  --band-land: #2a0b04;
+  --band-dry: #240804;
+  --band-shoal: #64180a;
+  --band-margin: #3e0f06;
+  --band-safe: #1c0502;
+  --band-deepest: #0b0101;
+  --safety: #e0502e;
+  --coast: #6e1c0c;
+  --land-text: #9a3420;
+  --water-text: #a03822;
+  --sounding: #7a2414;
+  --sounding-hi: #f06a48;
+  --lt-r: #ff5a3a;
+  --lt-g: #b0341c;
+  --lt-w: #ff7a52;
+  --buoy-r: #8e2a16;
+  --buoy-g: #6a1c0e;
+  --buoy-n: #7e2a16;
+
+  --tl-night: #090101;
+  --tl-twi: #120302;
+  --tl-day: #1a0503;
+  --sun-twi: #4a1208;
+  --sun-day: #8e2a16;
+}
+
+.root,
+.root :where(p, b, span, dt, dd, h1, h2, h3, small, li, button, text, tspan, path, rect, circle, i, footer) {
+  transition:
+    color 420ms cubic-bezier(0.16, 1, 0.3, 1),
+    background-color 420ms cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 420ms cubic-bezier(0.16, 1, 0.3, 1),
+    fill 420ms cubic-bezier(0.16, 1, 0.3, 1),
+    stroke 420ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.root ::selection {
+  background: color-mix(in srgb, var(--accent) 34%, transparent);
+  color: var(--text);
+}
+
+.root :where(h1, h2, h3, p, dl, dd, ol, ul, figure) {
+  margin: 0;
+}
+
+.root :where(ol, ul) {
+  padding: 0;
+  list-style: none;
+}
+
+.tn {
+  font-variant-numeric: tabular-nums;
+}
+
+.num {
+  font-family: var(--shot-mono), ui-monospace, monospace;
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+}
+
+/* ── status bar and header ───────────────────────────────────────────────── */
+
+.status {
+  position: sticky;
+  top: 0;
+  z-index: 6;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 44px;
+  padding: 2px 26px 0 34px;
+  background: var(--ground);
+  color: var(--text);
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.status .num {
+  font-family: var(--shot-sans);
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+.head {
+  padding: 6px 20px 14px;
+}
+
+.place h1 {
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--text);
+}
+
+.place p {
+  margin-top: 2px;
+  font-size: 13px;
+  color: var(--text-2);
+}
+
+.answer {
+  margin-top: 12px;
+}
+
+.answer h2 {
+  font-size: 25px;
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.012em;
+  color: var(--text);
+  text-wrap: balance;
+}
+
+.answer h2 .num {
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  color: var(--accent);
+}
+
+.dash {
+  margin: 0 0.12em;
+  color: var(--text-3);
+}
+
+.answer p {
+  margin-top: 5px;
+  font-size: 14px;
+  color: var(--text-2);
+}
+
+/* ── chart ───────────────────────────────────────────────────────────────── */
+
+.chart {
+  position: relative;
+  width: 390px;
+  height: 260px;
+  overflow: hidden;
+  background: var(--band-deepest);
+  border-block: 1px solid var(--rule);
+}
+
+.chartCanvas,
+.chartSvg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.chartSvg {
+  font-family: var(--shot-sans);
+}
+
+.chartStamp {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  padding: 5px 9px 5px 8px;
+  border: 1px solid var(--rule-strong);
+  border-radius: 6px;
+  background: color-mix(in srgb, var(--ground) 84%, transparent);
+  font-size: 12px;
+  color: var(--text-2);
+}
+
+.chartStamp b {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.works {
+  fill: none;
+  stroke: var(--coast);
+  stroke-linecap: round;
+}
+
+.pontoon {
+  fill: none;
+  stroke: var(--text-3);
+  stroke-linecap: round;
+}
+
+.sounding {
+  font-size: 10px;
+  font-style: italic;
+  fill: var(--sounding);
+}
+
+.soundingShallow {
+  fill: var(--sounding-hi);
+  font-weight: 700;
+}
+
+.soundingDec {
+  font-size: 7.5px;
+}
+
+.landName {
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  fill: var(--land-text);
+}
+
+.waterName {
+  font-size: 10px;
+  font-style: italic;
+  fill: var(--water-text);
+}
+
+.route {
+  fill: none;
+  stroke: var(--route);
+  stroke-width: 1.5;
+  stroke-dasharray: 6 3.5;
+  stroke-linecap: round;
+}
+
+.waypoint {
+  fill: var(--ground);
+  stroke: var(--route);
+  stroke-width: 1.2;
+}
+
+.routeLabel {
+  font-family: var(--shot-mono);
+  font-size: 9.5px;
+  fill: var(--route);
+}
+
+/* lights: on and off are hard cuts, as they are on the water */
+.root .light :where(path, circle) {
+  transition: none;
+}
+
+.halo {
+  opacity: 0;
+}
+
+.flare {
+  opacity: 0.3;
+  stroke: var(--ground);
+  stroke-width: 0.6;
+}
+
+.light[data-on="1"] .halo {
+  opacity: 1;
+}
+
+.light[data-on="1"] .flare {
+  opacity: 1;
+}
+
+.light[data-c="r"] .flare {
+  fill: var(--lt-r);
+}
+
+.light[data-c="g"] .flare {
+  fill: var(--lt-g);
+}
+
+.light[data-c="w"] .flare {
+  fill: var(--lt-w);
+}
+
+.stop_r {
+  stop-color: var(--lt-r);
+}
+
+.stop_g {
+  stop-color: var(--lt-g);
+}
+
+.stop_w {
+  stop-color: var(--lt-w);
+}
+
+.buoyG {
+  fill: var(--buoy-g);
+  stroke: var(--ground);
+  stroke-width: 0.8;
+}
+
+.buoyR {
+  fill: var(--buoy-r);
+  stroke: var(--ground);
+  stroke-width: 0.8;
+}
+
+.buoyN path {
+  fill: var(--buoy-n);
+  stroke: var(--buoy-n);
+  stroke-width: 1.2;
+  stroke-linejoin: round;
+}
+
+.pierLight {
+  fill: var(--coast);
+}
+
+.buoyBase {
+  fill: var(--ground);
+  stroke: var(--text-2);
+  stroke-width: 0.8;
+}
+
+.lightLabel {
+  font-family: var(--shot-mono);
+  font-size: 9px;
+  fill: var(--text-2);
+}
+
+.ownship path {
+  fill: color-mix(in srgb, var(--accent) 28%, transparent);
+  stroke: var(--accent);
+  stroke-width: 1.4;
+  stroke-linejoin: round;
+}
+
+.ownLabel {
+  font-family: var(--shot-mono);
+  font-size: 9.5px;
+  fill: var(--accent);
+}
+
+:where(.barCallout, .figs [data-v], .verdict) {
+  --vcol: var(--accent);
+}
+
+.root [data-v="margin"] {
+  --vcol: var(--warn);
+}
+
+.root [data-v="aground"] {
+  --vcol: var(--danger);
+}
+
+.barRing {
+  fill: none;
+  stroke: var(--vcol);
+  stroke-width: 1.5;
+}
+
+.barLeader {
+  fill: none;
+  stroke: var(--vcol);
+  stroke-width: 1;
+  opacity: 0.7;
+}
+
+.barBox {
+  fill: color-mix(in srgb, var(--ground) 88%, transparent);
+  stroke: var(--rule-strong);
+}
+
+.barTitle {
+  font-size: 10.5px;
+  font-weight: 700;
+  fill: var(--text);
+}
+
+.barDim {
+  font-weight: 400;
+  fill: var(--text-2);
+}
+
+.barFig {
+  font-family: var(--shot-mono);
+  font-size: 11px;
+  fill: var(--text);
+}
+
+.barUkc {
+  font-weight: 700;
+  fill: var(--vcol);
+}
+
+.chartFurniture {
+  fill: var(--text-2);
+  stroke: var(--text-2);
+  stroke-width: 1;
+  font-size: 9px;
+}
+
+.chartFurniture text {
+  stroke: none;
+}
+
+/* ── legend ──────────────────────────────────────────────────────────────── */
+
+.legend {
+  display: flex;
+  justify-content: space-between;
+  padding: 7px 20px;
+  font-size: 12px;
+  color: var(--text-2);
+}
+
+.legend li {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.legend i {
+  width: 14px;
+  height: 10px;
+  border: 1px solid var(--rule-strong);
+  border-radius: 2px;
+}
+
+.legend i[data-b="dry"] {
+  background: var(--band-dry);
+}
+
+.legend i[data-b="shoal"] {
+  background: var(--band-shoal);
+}
+
+.legend i[data-b="margin"] {
+  background: var(--band-margin);
+}
+
+.legend i[data-b="safe"] {
+  background: var(--band-safe);
+}
+
+.legend i[data-b="contour"] {
+  height: 3px;
+  border: 0;
+  border-radius: 2px;
+  background: var(--safety);
+}
+
+/* ── scrub readout and timeline ──────────────────────────────────────────── */
+
+.scrub {
+  padding-top: 10px;
+  border-top: 1px solid var(--rule);
+}
+
+.readout {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 18px;
+  align-items: end;
+  padding: 0 20px;
+}
+
+.when b {
+  display: block;
+  font-size: 34px;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--text);
+}
+
+.when span {
+  display: block;
+  margin-top: 5px;
+  font-size: 12px;
+  color: var(--text-2);
+}
+
+.figs {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.figs dt {
+  font-size: 11.5px;
+  color: var(--text-2);
+  white-space: nowrap;
+}
+
+.figs dd {
+  margin-top: 2px;
+  font-size: 17px;
+  font-weight: 500;
+  color: var(--text);
+  white-space: nowrap;
+}
+
+.figs dd small {
+  font-size: 11px;
+  color: var(--text-2);
+}
+
+.figs [data-v] dd {
+  color: var(--vcol);
+  font-weight: 700;
+}
+
+.verdict {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 10px 20px 0;
+  padding: 8px 12px;
+  border: 1px solid color-mix(in srgb, var(--vcol) 34%, transparent);
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--vcol) 9%, var(--ground));
+  font-size: 13px;
+  color: var(--text-2);
+}
+
+.verdict b {
+  color: var(--vcol);
+  font-size: 14px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.verdict span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.verdictIcon {
+  flex: none;
+  color: var(--vcol);
+}
+
+.controls {
+  display: flex;
+  gap: 8px;
+  padding: 6px 20px 8px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 34px;
+  padding: 0 13px 0 10px;
+  border: 1px solid var(--rule-strong);
+  border-radius: 17px;
+  background: var(--panel);
+  color: var(--text);
+  font: inherit;
+  font-size: 13.5px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn[data-primary] {
+  border-color: color-mix(in srgb, var(--accent) 45%, var(--rule-strong));
+  color: var(--accent);
+}
+
+.btn:hover:not(:disabled) {
+  background: var(--panel-2);
+}
+
+.btn:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.btn:disabled {
+  color: var(--text-3);
+  border-color: var(--rule);
+  cursor: default;
+}
+
+.root :focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.timeline {
+  position: relative;
+  height: 258px;
+  margin-top: 4px;
+  cursor: grab;
+  touch-action: pan-y;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.timeline:active {
+  cursor: grabbing;
+}
+
+.root .timeline:focus-visible {
+  outline-offset: -2px;
+  border-radius: 6px;
+}
+
+.tlSvg {
+  display: block;
+  font-family: var(--shot-sans);
+  overflow: hidden;
+}
+
+.tlNight {
+  fill: var(--tl-night);
+}
+
+.tlTwilight {
+  fill: var(--tl-twi);
+}
+
+.tlDay {
+  fill: var(--tl-day);
+}
+
+.tlGrid {
+  stroke: var(--rule);
+  stroke-width: 1;
+}
+
+.tlMidnight {
+  stroke: var(--text-3);
+  stroke-width: 1;
+  stroke-dasharray: 2 3;
+}
+
+.tlHour {
+  font-family: var(--shot-mono);
+  font-size: 10px;
+  fill: var(--text-3);
+}
+
+.tlHourOn {
+  fill: var(--text);
+  font-weight: 700;
+}
+
+.tlOff {
+  opacity: 0.5;
+}
+
+.tlDayName {
+  font-size: 10.5px;
+  font-weight: 700;
+  fill: var(--text-2);
+}
+
+.tlWater {
+  fill: var(--band-safe);
+}
+
+.tlSafe {
+  fill: var(--accent);
+  opacity: 0.22;
+}
+
+.tlCurveSafe {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 2;
+  stroke-linejoin: round;
+}
+
+.tlThreshold {
+  stroke: var(--accent);
+  stroke-width: 1;
+  stroke-dasharray: 3 3;
+  opacity: 0.55;
+}
+
+.tlCurve {
+  fill: none;
+  stroke: var(--curve);
+  stroke-width: 1.6;
+  stroke-linejoin: round;
+}
+
+.tlWindow path {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 1;
+  stroke-dasharray: 2 3;
+  opacity: 0.5;
+}
+
+.tlWindow text {
+  font-family: var(--shot-mono);
+  font-size: 10.5px;
+  font-weight: 600;
+  fill: var(--accent);
+}
+
+.tlExtreme circle {
+  fill: var(--curve);
+}
+
+.tlExtreme text {
+  font-family: var(--shot-mono);
+  font-size: 9.5px;
+  fill: var(--text-2);
+}
+
+.tlExKind {
+  font-family: var(--shot-sans);
+  font-weight: 700;
+  fill: var(--text-3);
+}
+
+.tlNow path {
+  fill: none;
+  stroke: var(--route);
+  stroke-width: 1.2;
+  stroke-dasharray: 2 2;
+}
+
+.tlNow text {
+  font-size: 10px;
+  font-weight: 700;
+  fill: var(--route);
+}
+
+.tlWindCell {
+  fill: transparent;
+  stroke: transparent;
+}
+
+/* the hour highlight follows the playhead; a fade would leave two lit */
+.root .tlWindCell,
+.root .tlArrow,
+.root .tlHour {
+  transition: none;
+}
+
+.tlWindOn .tlWindCell {
+  fill: var(--panel-2);
+  stroke: var(--rule-strong);
+}
+
+.tlArrow {
+  fill: none;
+  stroke: var(--text-2);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.tlWindOn .tlArrow {
+  stroke: var(--text);
+}
+
+.tlKt {
+  font-family: var(--shot-mono);
+  font-size: 12.5px;
+  fill: var(--text);
+}
+
+.tlGust {
+  font-family: var(--shot-mono);
+  font-size: 10px;
+  fill: var(--text-2);
+}
+
+.tlWind[data-warn] .tlGust {
+  fill: var(--warn);
+  font-weight: 700;
+}
+
+.sunNight {
+  fill: var(--rule);
+}
+
+.sunTwilight {
+  fill: var(--sun-twi);
+}
+
+.sunDay {
+  fill: var(--sun-day);
+}
+
+.sunMark path {
+  stroke: var(--text-3);
+  stroke-width: 1;
+}
+
+.sunMark text {
+  font-size: 10px;
+  fill: var(--text-2);
+}
+
+.fadeStop {
+  stop-color: var(--ground);
+}
+
+.tlAxis {
+  font-family: var(--shot-mono);
+  font-size: 9.5px;
+  fill: var(--text-3);
+}
+
+.tlThrLabel {
+  font-size: 9.5px;
+  font-weight: 700;
+  fill: var(--accent);
+  opacity: 0.85;
+}
+
+.tlTrackLabel {
+  font-size: 9.5px;
+  fill: var(--text-2);
+}
+
+.playhead {
+  stroke: var(--accent);
+  stroke-width: 1.5;
+}
+
+.playDot {
+  fill: var(--ground);
+  stroke: var(--accent);
+  stroke-width: 2;
+}
+
+.playCap {
+  fill: var(--accent);
+}
+
+.hint {
+  padding: 2px 20px 0;
+  font-size: 12px;
+  color: var(--text-2);
+}
+
+/* ── lower sections ──────────────────────────────────────────────────────── */
+
+.block {
+  margin-top: 22px;
+  padding: 20px 20px 4px;
+  border-top: 1px solid var(--rule);
+}
+
+.block h3 {
+  margin-bottom: 8px;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.rows > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 46px;
+  padding: 7px 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.rows dt {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  column-gap: 8px;
+  font-size: 14.5px;
+}
+
+.rows dt small {
+  flex-basis: 100%;
+  font-size: 12px;
+  color: var(--text-2);
+}
+
+.rows dd {
+  font-size: 15px;
+  color: var(--text);
+}
+
+.rowIcon {
+  flex: none;
+  color: var(--text-2);
+}
+
+.advisory {
+  display: flex;
+  gap: 10px;
+  margin: 16px 0 4px;
+  padding: 12px 13px;
+  border: 1px solid color-mix(in srgb, var(--warn) 30%, transparent);
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--warn) 7%, var(--ground));
+  font-size: 13.5px;
+  line-height: 1.45;
+  color: var(--text);
+}
+
+.advisory b {
+  color: var(--warn);
+}
+
+.advisoryIcon {
+  flex: none;
+  margin-top: 1px;
+  color: var(--warn);
+}
+
+.tides {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  margin-top: 14px;
+}
+
+.tides li {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  padding: 10px 0 10px 10px;
+  border-left: 1px solid var(--rule);
+}
+
+.tides li:first-child {
+  padding-left: 0;
+  border-left: 0;
+}
+
+.tides li span:first-child {
+  font-size: 12px;
+  color: var(--text-2);
+}
+
+.tides li b {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.tides li span:last-child {
+  font-size: 12px;
+  color: var(--text-2);
+}
+
+.lede {
+  margin-bottom: 4px;
+  font-size: 14px;
+  color: var(--text-2);
+}
+
+.switchRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  margin-top: 16px;
+  padding: 13px 14px;
+  border: 1px solid var(--rule-strong);
+  border-radius: 14px;
+  background: var(--panel);
+  color: var(--text);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.switchRow:hover {
+  background: var(--panel-2);
+}
+
+.switchText {
+  flex: 1;
+  min-width: 0;
+}
+
+.switchText b {
+  display: block;
+  font-size: 15px;
+}
+
+.switchText small {
+  display: block;
+  margin-top: 1px;
+  font-size: 12.5px;
+  line-height: 1.35;
+  color: var(--text-2);
+}
+
+.switch {
+  position: relative;
+  flex: none;
+  width: 46px;
+  height: 28px;
+  border-radius: 14px;
+  background: var(--rule-strong);
+}
+
+.switch span {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--text-2);
+  transition:
+    transform 320ms cubic-bezier(0.16, 1, 0.3, 1),
+    background-color 320ms;
+}
+
+.switchRow[aria-checked="true"] .switch {
+  background: color-mix(in srgb, var(--accent) 55%, var(--ground));
+}
+
+.switchRow[aria-checked="true"] .switch span {
+  transform: translateX(18px);
+  background: var(--accent);
+}
+
+.foot {
+  padding: 22px 20px 48px;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--text-2);
+}
