@@ -5,7 +5,7 @@ export const site = {
   description:
     "A daily interface study. One screen designed and built from scratch, every day — product UI, editorial layout, WebGL, and whatever else the idea needs.",
   // Point a domain at Vercel and change this one string.
-  url: "https://dailyshots.vercel.app",
+  url: "https://dailyshots-pearl.vercel.app",
   links: {
     github: "https://github.com/shodo97/dailyshots",
   },

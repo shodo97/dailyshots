@@ -4,7 +4,7 @@ One interface, every day. Designed and built from scratch — product UI,
 editorial layout, WebGL, whatever the idea asks for. No shared design system
 between pieces.
 
-**[dailyshots.vercel.app](https://dailyshots.vercel.app)**
+**[dailyshots-pearl.vercel.app](https://dailyshots-pearl.vercel.app)**
 
 ## Run it
 
